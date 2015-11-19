@@ -1,5 +1,5 @@
 FILE *img_file;
-char file_name[50], op[3];
+char file_name[50];
 int lar, alt, MAX, maxRGB;
 int i,j;
 

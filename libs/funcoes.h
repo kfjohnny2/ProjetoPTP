@@ -4,12 +4,14 @@ void binarizacao(PPMRgb img[MAX][MAX]){
     */
 
     //Variaveis de controle.
-    int i, j, mediaRGB;
+    int i, j, mediaRGB, base;
+    printf("Digite um valor base para a binarizacao\n");
+    scanf("%i", &base);
     for (i = 0; i < lar; i++){
         for (j = 0; j < alt; j++){
                 //CALCULO DA MEDIA DOS RGBs seguida da redefinicao dos valores.
                 mediaRGB = (img[i][j].red + img[i][j].green + img[i][j].blue)/3;
-                if(mediaRGB<maxRGB/2){
+                if(mediaRGB<base){
                     mediaRGB = 0;
                 } else {
                     mediaRGB = maxRGB;
