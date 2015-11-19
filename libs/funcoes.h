@@ -52,21 +52,31 @@ void ampliar(PPMRgb img[alt][lar], char filename[]){
 void rotate(PPMRgb img[MAX][MAX], char filename[]){
     int i, j;
     strcat(strcat(filename, "-rot"), ".ppm");
-        //Abre o arquivo para manipulacao.
-
+        
+    //Abre o arquivo para manipulacao.
     img_file = fopen(filename, "w");
 
     PPMRgb img_aux[MAX][MAX];
+    for (i = 0; i < alt; i++)
+        for (j = 0; j < lar; j++)
+            //cria matriz temporaria para fazer a manipulacao
+            img_aux[i][j] = img[i][j];
 
     fprintf(img_file, "P3\n");
     fprintf(img_file, "%i %i\n", alt, lar);
     fprintf(img_file, "%i\n",maxRGB);
-    for (j = 0; j < lar; j++){
-        for (i = 0; i < alt; i++){
-             fprintf(img_file, "%i %i %i\n", img[i][j].red, img[i][j].green, img[i][j].blue);
-        }
-    }
+
+    //copia a matriz auxiliar para dentro da matriz de origem deitada (transposta)
+    for (i = 0; i < alt; i++)
+        for (j = 0; j < lar; j++)
+            img[lar-j-1][i] = img_aux[i][j]; 
+
+    for (i = 0; i < alt; i++)
+        for (j = 0; j < lar; j++)
+            //repete o processo de copia de matri
+            fprintf(img_file, "%i %i %i\n", img[i][j].red, img[i][j].green, img[i][j].blue);
     fclose(img_file);
+
 }
 
 void imprimir(char filename[], PPMRgb img[MAX][MAX]){
