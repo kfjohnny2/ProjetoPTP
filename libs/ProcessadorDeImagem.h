@@ -8,7 +8,7 @@ void verificaPPM(char file[]){
     strcpy(file_name, file);
 
     //DEFINE O NOME FINAL DO ARQUIVO, CONCATENANDO O FORMATO DO MESMO.
-    img_file = fopen(strcat(file,".ppm"), "r");
+    img_file = fopen(strcat(file_name,".ppm"), "r");
     if (img_file == NULL) {
         fprintf(stderr, "ARQUIVO NULO\n");
         return;
@@ -21,8 +21,8 @@ void verificaPPM(char file[]){
     //verificaComentarios();
     fscanf(img_file, "%i ", &lar);
     //verificaComentarios();
-    fscanf(img_file, "%i ", &alt);
-    fscanf(img_file, "%i ", &maxRGB);
+    fscanf(img_file, "%i \n", &alt);
+    fscanf(img_file, "%i \n", &maxRGB);
     //verificaComentarios();
 
     /*Verifica se os valores sao diferentes de nulo*/
@@ -51,15 +51,18 @@ void verificaPPM(char file[]){
 void lerPPM(PPMRgb img[MAX][MAX]){
 
     /*Percorre o arquivo 'img_file' preenchendo cada item do registro 'PPMRgb' com o seu devido valor vindo do arquivo*/
-    for (i = 0; i < alt; i++)
+    for (i = 0; i < alt; i++){
         for (j = 0; j < lar; j++) {
-            fscanf(img_file, "%i ", &img[i][j].red);
+            //fscanf(img_file, "%i %i %i", &img[i][j].r, &img[i][j].g, &img[i][j].b);
+            fscanf(img_file, "%i ", &img[i][j].g);
             //verificaComentarios();
-            fscanf(img_file, "%i ", &img[i][j].green);
+            fscanf(img_file, "%i ", &img[i][j].b);
             //verificaComentarios();
-            fscanf(img_file, "%i ", &img[i][j].blue);
+            fscanf(img_file, "%i ", &img[i][j].r);
             //verificaComentarios();
         }
+    }
+        
 }
 
 void verificaComentarios(){
