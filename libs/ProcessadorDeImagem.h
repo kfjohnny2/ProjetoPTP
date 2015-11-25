@@ -77,3 +77,35 @@ void verificaComentarios(){
     //Limpa o getc para reutilizaçao futura 
     ungetc(c, img_file);
 }
+
+void menu(char filtro[], char arquivo[], PPMRgb img[MAX][MAX]){
+    char sair[1];
+    printf("Qual filtro voce deseja aplicar na sua imagem?\nBinarizar imagem --- > 'thr'\nEmbaçar imagem --- > 'blu'\nAplicar sharpening --- > 'sha'\nRotacionar imagem --- >'rot'\nAmpliar imagem --- > 'amp'\nReduzir imagem --- > 'red'\nFinalizar aplicação --- > 'sair'\n");
+    scanf("%s", filtro);
+    if (!strcmp(filtro, "thr")){
+        binarizacao(img, arquivo); 
+        //imprimir(file_name, img);
+    } else if (!strcmp(filtro, "amp")){
+        ampliar(img, arquivo);
+    }  else if(!strcmp(filtro, "rot")){
+        rotate(img, arquivo);
+    }  else if(!strcmp(filtro, "red")){
+        reduce(img, arquivo);
+    } else if(!strcmp(filtro, "blu")){
+        blurring(img, arquivo);
+    } else if(!strcmp(filtro, "sha")){
+        sharpening(img, arquivo);
+    } else if(!strcmp(filtro, "sair")){
+        printf("Concluido\n");
+        exit(0);
+    } 
+    
+    printf("Deseja finalizar o sistema? s/n \n");
+    scanf("%s", sair);
+    if(!strcmp(sair, "s")){
+        printf("Concluido\n");
+        exit(0);
+    } else if(!strcmp(sair, "n")){
+        menu(filtro, arquivo, img);
+    }
+}

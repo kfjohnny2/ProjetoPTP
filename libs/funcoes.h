@@ -7,9 +7,10 @@ void binarizacao(PPMRgb img[MAX][MAX], char filename[]){
     int i, j, mediaRGB, base;
     printf("Digite um valor base para a binarizacao\n");
     scanf("%i", &base);
-       //Concatena os caracteres do nome do arquivo com o formato do mesmo para a saida.
-    strcat(strcat(filename, "_bin"), ".ppm");
     
+    //Concatena os caracteres do nome do arquivo com o formato do mesmo para a saida. 
+    strcat(strcat(strcat(filename, "_"), "bin"), ".ppm");
+       
     //Abre o arquivo para manipulacao.
     img_file = fopen(filename, "w");
 
@@ -38,8 +39,8 @@ void binarizacao(PPMRgb img[MAX][MAX], char filename[]){
 
 void ampliar(PPMRgb img[alt][lar], char filename[]){
     int amp, k, l;
-
-    strcat(strcat(filename, "_amp"), ".ppm");
+  
+    strcat(strcat(strcat(filename, "_"), "amp"), ".ppm");
     
     //Abre o arquivo para manipulacao.
     img_file = fopen(filename, "w");
@@ -63,11 +64,15 @@ void ampliar(PPMRgb img[alt][lar], char filename[]){
 }
 
 void rotate(PPMRgb img[MAX][MAX], char filename[]){
-    int i, j;
-    //strcat(strcat(filename, "-rot"), ".ppm");
-     strcat(filename, "_rot.ppm");  
+    int i, j, k, rotacoes;
+
+    strcat(strcat(strcat(filename, "_"), "rot"), ".ppm");
+
     //Abre o arquivo para manipulacao.
     img_file = fopen(filename, "w");
+
+    printf("Em quantas vezes deseja rotacionar a foto?\n");
+    scanf("%i", &rotacoes);
 
     //cria matriz temporaria para fazer a manipulacao
     PPMRgb img_aux[MAX][MAX];
@@ -82,11 +87,14 @@ void rotate(PPMRgb img[MAX][MAX], char filename[]){
     fprintf(img_file, "%i\n",maxRGB);
 
     //copia a matriz auxiliar para dentro da matriz de origem deitada (transposta)
-    for (i = 0; i < alt; i++){
-        for (j = 0; j < lar; j++){
-            img[lar-j-1][i] = img_aux[i][j];
+    for ( i = 0; i < rotacoes; ++i){
+       for (i = 0; i < alt; i++){
+            for (j = 0; j < lar; j++){
+                img[lar-j-1][i] = img_aux[i][j];
+            }
         }
     }
+ 
     for (i = 0; i < alt; i++){
         for (j = 0; j < lar; j++){
             //repete o processo de copia de matriz
@@ -130,6 +138,95 @@ void reduce(PPMRgb img[MAX][MAX], char filename[]){
     }
     fclose(img_file);
 }
+
+void blurring(PPMRgb img[MAX][MAX], char filename[]){
+    int i, j;
+
+    strcat(strcat(strcat(filename, "_"), "blu"), ".ppm");
+
+    //Abre o arquivo para manipulacao.
+    img_file = fopen(filename, "w");
+
+    //cria matriz temporaria para fazer a manipulacao
+    PPMRgb img_aux[MAX][MAX];
+    for (i = 0; i < alt; i++){
+        for (j = 0; j < lar; j++){
+            //clona a matriz
+            img_aux[i][j] = img[i][j];
+        }
+    }
+
+    fprintf(img_file, "P3\n");
+    fprintf(img_file, "%i %i\n", alt, lar);
+    fprintf(img_file, "%i\n",maxRGB);
+
+    for (i = 1; i < alt-1; i++){
+        for (j = 0; j < lar-1; j++){
+            
+            img[i][j].r =(img_aux[i-1][j-1].r + img_aux[i-1][j].r + img_aux[i-1][j+1].r +
+                           img_aux[i][j-1].r + img_aux[i][j].r + img_aux[i][j+1].r +
+                           img_aux[i+1][j-1].r + img_aux[i+1][j].r + img_aux[i+1][j+1].r)/9;
+
+            img[i][j].g =(img_aux[i-1][j-1].g + img_aux[i-1][j].g + img_aux[i-1][j+1].g +
+                           img_aux[i][j-1].g + img_aux[i][j].g + img_aux[i][j+1].g +
+                           img_aux[i+1][j-1].g + img_aux[i+1][j].g + img_aux[i+1][j+1].g)/9;
+
+            img[i][j].b =(img_aux[i-1][j-1].b + img_aux[i-1][j].b + img_aux[i-1][j+1].b +
+                           img_aux[i][j-1].b + img_aux[i][j].r + img_aux[i][j+1].r +
+                           img_aux[i+1][j-1].b + img_aux[i+1][j].b + img_aux[i+1][j+1].b)/9; 
+            
+        }
+    }
+
+    for (i = 0; i < alt; i++){
+        for (j = 0; j < lar; j++){
+            //repete o processo de copia de matriz
+            fprintf(img_file, "%i %i %i\n", img[i][j].r, img[i][j].g, img[i][j].b);
+        }
+    }
+}
+
+void sharpening(PPMRgb img[MAX][MAX], char filename[]){
+    int i, j;
+
+    strcat(strcat(strcat(filename, "_"), "sha"), ".ppm");
+
+    //Abre o arquivo para manipulacao.
+    img_file = fopen(filename, "w");
+
+    //cria matriz temporaria para fazer a manipulacao
+    PPMRgb img_aux[MAX][MAX];
+    for (i = 0; i < alt; i++){
+        for (j = 0; j < lar; j++){
+            //clona a matriz
+            img_aux[i][j] = img[i][j];
+        }
+    }
+
+    fprintf(img_file, "P3\n");
+    fprintf(img_file, "%i %i\n", alt, lar);
+    fprintf(img_file, "%i\n",maxRGB);
+
+    for (i = 1; i < alt-1; i++){
+        for (j = 0; j < lar-1; j++){
+            
+            img[i][j].r = 5*img_aux[i][j].r - img_aux[i-1][j].r - img_aux[i][j-1].r - img_aux[i][j+1].r - img_aux[i+1][j].r;
+
+            img[i][j].g = 5*img_aux[i][j].g - img_aux[i-1][j].g - img_aux[i][j-1].g - img_aux[i][j+1].g - img_aux[i+1][j].g;
+                           
+            img[i][j].b = 5*img_aux[i][j].b - img_aux[i-1][j].b - img_aux[i][j-1].b - img_aux[i][j+1].b - img_aux[i+1][j].b;
+                           
+        }
+    }
+
+    for (i = 0; i < alt; i++){
+        for (j = 0; j < lar; j++){
+            //repete o processo de copia de matriz
+            fprintf(img_file, "%i %i %i\n", img[i][j].r, img[i][j].g, img[i][j].b);
+        }
+    }
+}
+
 
 void imprimir(char filename[], PPMRgb img[MAX][MAX]){
 

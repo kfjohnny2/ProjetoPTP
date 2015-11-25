@@ -4,31 +4,37 @@
 #include "libs/ProcessadorDeImagem.h"
 
 int main(){
-    char filtro[3];
-
+    char filtro[4];
+    char arquivo[50];
     //Recebe e armazena nome do arquivo em uma variavel do tipo char.
     printf("Nome do arquivo: ");
-    scanf("%s", file_name);
+    scanf("%s", arquivo);
     
     //Joga o arquivo no metodo de verificacao.
-    verificaPPM(file_name);
+    verificaPPM(arquivo);
 
     //Instancia novamento o registro de pixels, 'PPMRgb' com os valores redefinidos.
     PPMRgb img[MAX][MAX];
 
-    printf("Qual filtro voce deseja aplicar na sua imagem?\n'thr'\n'blu'\n'sha'\n'rot'\n'amp'\n'red'\n");
+    menu(filtro, arquivo, img);
+    /*
+    printf("Qual filtro voce deseja aplicar na sua imagem?\n'thr'\n'blu'\n'sha'\n'rot'\n'amp'\n'red'\n'sair'\n");
     scanf("%s", filtro);
     if (!strcmp(filtro, "thr")){
-        binarizacao(img, file_name); 
+        binarizacao(img, arquivo); 
         //imprimir(file_name, img);
     } else if (!strcmp(filtro, "amp")){
-        ampliar(img, file_name);
+        ampliar(img, arquivo);
     }  else if(!strcmp(filtro, "rot")){
-        rotate(img, file_name);
+        rotate(img, arquivo);
     }  else if(!strcmp(filtro, "red")){
-        reduce(img, file_name);
-    } 
+        reduce(img, arquivo);
+    } else if(!strcmp(filtro, "blu")){
+        blurring(img, arquivo);
+    } else if(!strcmp(filtro, "sha")){
+        sharpening(img, arquivo);
+    }
         
-    printf("Pronto\n");
+    printf("Pronto\n");*/
     return 0;
 }

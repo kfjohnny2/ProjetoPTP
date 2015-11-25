@@ -6,3 +6,6 @@ void binarizacao(PPMRgb img[MAX][MAX], char filename[]);
 void ampliar(PPMRgb img[MAX][MAX], char filename[]);
 void rotate(PPMRgb img[MAX][MAX], char filename[]);
 void reduce(PPMRgb img[MAX][MAX], char filename[]);
+void blurring(PPMRgb img[MAX][MAX], char filename[]);
+void sharpening(PPMRgb img[MAX][MAX], char filename[]);
+void menu(char filtro[], char arquivo[], PPMRgb img[MAX][MAX]);
